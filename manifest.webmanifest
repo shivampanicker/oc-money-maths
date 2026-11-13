@@ -1,0 +1,14 @@
+{
+  "name": "OC Money Masters",
+  "short_name": "OC Money",
+  "description": "Learn NSW Opportunity Class money problems: lessons, worked examples, guided practice and a mock exam.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f8fb",
+  "theme_color": "#1d3557",
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}

@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#1d3557" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-title" content="OC Money" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
+  <title>OC Money Masters | NSW Opportunity Class Maths</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Ccircle cx=%2250%22 cy=%2250%22 r=%2248%22 fill=%22%232e9e5b%22/%3E%3Ctext x=%2250%22 y=%2268%22 font-size=%2256%22 text-anchor=%22middle%22 fill=%22white%22 font-family=%22Arial%22 font-weight=%22bold%22%3E$%3C/text%3E%3C/svg%3E" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand"><span class="logo">$</span> OC Money Masters</div>
+    <nav class="tabs" id="tabs">
+      <button data-view="home" class="active">Home</button>
+      <button data-view="lecture">1 · Classroom</button>
+      <button data-view="examples">2 · Worked Examples</button>
+      <button data-view="practice">3 · Practice</button>
+      <button data-view="exam">4 · Mock Exam</button>
+    </nav>
+    <button id="voiceToggle" class="voice-btn" title="Turn the teacher's voice on or off">🔊 Voice on</button>
+  </header>
+
+  <main>
+    <!-- HOME -->
+    <section id="view-home" class="view active">
+      <div class="hero">
+        <h1>G'day, money detective! 🕵️</h1>
+        <p>OC money questions love to hide sneaky traps. Work through the four stages below and you'll spot them every time.</p>
+      </div>
+      <div class="cards">
+        <button class="card" data-go="lecture"><span class="num">1</span><h3>The Classroom</h3><p>Watch and listen as your teacher explains unit prices, sneaky discounts and working backwards.</p></button>
+        <button class="card" data-go="examples"><span class="num">2</span><h3>Worked Examples</h3><p>Step through three classic OC problems, one idea at a time.</p></button>
+        <button class="card" data-go="practice"><span class="num">3</span><h3>Guided Practice</h3><p>Mild, Medium or Spicy questions with a coach who helps when you're stuck.</p></button>
+        <button class="card" data-go="exam"><span class="num">4</span><h3>Mock Exam</h3><p>10 questions, 15 minutes, no hints — just like the real test.</p></button>
+      </div>
+      <p class="note">Tip: the teacher's voice uses your browser's built-in speech (Australian English when available). Use the 🔊 button to turn it off.</p>
+    </section>
+
+    <!-- STAGE 1 -->
+    <section id="view-lecture" class="view">
+      <div class="stage-head">
+        <h2>Stage 1 · The Classroom</h2>
+        <div class="slide-dots" id="lectureDots"></div>
+      </div>
+      <div class="board-wrap">
+        <canvas id="lectureCanvas" width="900" height="460" aria-label="Teacher's whiteboard"></canvas>
+        <div class="captions" id="lectureCaption" aria-live="polite">Press ▶ Play to start the lesson.</div>
+      </div>
+      <div class="controls">
+        <button id="lecPrev" class="btn ghost" title="Previous slide">⏮ Previous slide</button>
+        <button id="lecBack" class="btn" title="Rewind one step (← key)">⏪ Rewind</button>
+        <button id="lecPlay" class="btn primary" title="Play (Space)">▶ Play</button>
+        <button id="lecPause" class="btn" title="Pause (Space)">⏸ Pause</button>
+        <button id="lecFwd" class="btn" title="Forward one step (→ key)">Forward ⏩</button>
+        <button id="lecReplay" class="btn" title="Replay this slide from the start">↻ Replay slide</button>
+        <button id="lecNext" class="btn ghost" title="Next slide">Next slide ⏭</button>
+        <span class="step-count lec-step" id="lecStep"></span>
+      </div>
+    </section>
+
+    <!-- STAGE 2 -->
+    <section id="view-examples" class="view">
+      <div class="stage-head">
+        <h2>Stage 2 · Worked Examples</h2>
+        <div class="pill-row" id="exampleTabs"></div>
+      </div>
+      <div class="example-grid">
+        <div>
+          <div class="problem-box" id="exampleText"></div>
+          <canvas id="exampleCanvas" width="900" height="300" aria-label="Bar model"></canvas>
+        </div>
+        <div class="side">
+          <div class="teacher-says" id="exampleSay">Press <b>Next Step</b> to begin.</div>
+          <ol class="equations" id="exampleEqs"></ol>
+          <div class="controls">
+            <button id="exReset" class="btn ghost">↺ Start again</button>
+            <button id="exRepeat" class="btn">🔁 Say it again</button>
+            <button id="exNext" class="btn primary">Next Step ▶</button>
+          </div>
+          <div class="step-count" id="exampleCount"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- STAGE 3 -->
+    <section id="view-practice" class="view">
+      <div class="stage-head">
+        <h2>Stage 3 · Guided Practice</h2>
+        <div class="pill-row" id="tierRow">
+          <button class="pill active" data-tier="mild">🌶 Mild</button>
+          <button class="pill" data-tier="medium">🌶🌶 Medium</button>
+          <button class="pill" data-tier="spicy">🌶🌶🌶 Spicy</button>
+        </div>
+      </div>
+      <div class="practice-grid">
+        <div class="practice-main">
+          <div class="score-line" id="practiceScore"></div>
+          <div class="problem-box big" id="practiceText"></div>
+          <form id="answerForm" class="answer-row" autocomplete="off">
+            <label for="answerInput" id="answerLabel">Your answer: $</label>
+            <input id="answerInput" inputmode="decimal" placeholder="e.g. 12.50" />
+            <button class="btn primary" type="submit">Check</button>
+          </form>
+          <div class="feedback" id="practiceFeedback" aria-live="polite"></div>
+          <div class="controls">
+            <button id="coachBtn" class="btn">🧑‍🏫 Coach Me Step-by-Step</button>
+            <button id="showSolution" class="btn ghost">Show full solution</button>
+            <button id="newProblem" class="btn primary">New question ▶</button>
+          </div>
+          <div class="solution" id="practiceSolution" hidden></div>
+        </div>
+        <aside class="drawer" id="coachDrawer" aria-hidden="true">
+          <div class="drawer-head"><h3>🧑‍🏫 Coach Me</h3><button id="closeCoach" class="icon-btn" aria-label="Close coach">✕</button></div>
+          <div id="coachSteps"></div>
+        </aside>
+      </div>
+      <div class="nudge" id="nudge" hidden>
+        <span id="nudgeText"></span>
+        <button id="nudgeYes" class="btn primary small">Yes, let's do it</button>
+        <button id="nudgeNo" class="btn ghost small">I'm OK</button>
+      </div>
+    </section>
+
+    <!-- STAGE 4 -->
+    <section id="view-exam" class="view">
+      <div id="examIntro" class="exam-intro">
+        <h2>Stage 4 · Mock Exam</h2>
+        <ul>
+          <li>10 Mathematical Reasoning money questions</li>
+          <li>15 minutes on the clock</li>
+          <li>Choose A, B, C, D or E for each question</li>
+          <li>No hints and no voice — just like the real test</li>
+          <li>Use 🚩 Flag to mark a question to check again</li>
+        </ul>
+        <button id="startExam" class="btn primary big">Start exam</button>
+      </div>
+      <div id="examRun" hidden>
+        <div class="exam-bar">
+          <div class="timer" id="examTimer">15:00</div>
+          <div class="qnav" id="examNav"></div>
+          <button id="submitExam" class="btn primary">Finish &amp; submit</button>
+        </div>
+        <div class="problem-box big" id="examQuestion"></div>
+        <div class="options" id="examOptions"></div>
+        <div class="controls">
+          <button id="examPrev" class="btn ghost">◀ Previous</button>
+          <button id="examFlag" class="btn">🚩 Flag for review</button>
+          <button id="examNext" class="btn primary">Next ▶</button>
+        </div>
+      </div>
+      <div id="examReport" hidden></div>
+    </section>
+  </main>
+
+  <div class="toast" id="toast" hidden></div>
+
+  <script src="js/util.js"></script>
+  <script src="js/speech.js"></script>
+  <script src="js/board.js"></script>
+  <script src="js/lecture.js"></script>
+  <script src="js/examples.js"></script>
+  <script src="js/practice.js"></script>
+  <script src="js/exam.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
